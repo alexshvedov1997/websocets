@@ -1,0 +1,4 @@
+'sqlalchemy[asyncio]'
+asyncpg == 0.28.0
+pydantic==1.9.0
+python-dotenv==0.20.0

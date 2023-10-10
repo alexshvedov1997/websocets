@@ -17,7 +17,8 @@ logger.addHandler(logging.StreamHandler(stream=sys.stdout))
 
 class Controller:
 
-    async def connect(self, json_data: dict) -> List[dict]:
+    @staticmethod
+    async def connect(json_data: dict) -> List[dict]:
         response_data = []
         user_id = json_data.get("user_id")
         async with get_session(postgres.psql_engine) as session:
@@ -39,7 +40,8 @@ class Controller:
                 })
             return response_data
 
-    async def create_message(self, json_data: dict):
+    @staticmethod
+    async def create_message(json_data: dict):
         user_id = json_data.get("user_id")
         message = json_data.get("message")
         async with get_session(postgres.psql_engine) as session:
@@ -51,7 +53,8 @@ class Controller:
                 await session.commit()
                 return True
 
-    async def comment_message(self, json_data: dict) -> Optional[bool]:
+    @staticmethod
+    async def comment_message(json_data: dict) -> Optional[bool]:
         user_id = json_data.get("user_id")
         message = json_data.get("message")
         parent_id = json_data.get("parent_id")
@@ -64,7 +67,8 @@ class Controller:
                 await session.commit()
                 return True
 
-    async def report_user(self, json_data: dict) -> None:
+    @staticmethod
+    async def report_user(json_data: dict) -> None:
         banned_user_id = json_data.get("banned_user_id")
         async with get_session(postgres.psql_engine) as session:
             users = await session.execute(select(User).where(User.user_id == banned_user_id))
@@ -76,7 +80,8 @@ class Controller:
             )
             await session.commit()
 
-    async def check_status(self, json_data: dict) -> dict:
+    @staticmethod
+    async def check_status(json_data: dict) -> dict:
         response_data = {"user": {}, "messages": [], "method": "/status"}
         user_id = json_data.get("user_id")
         last_message_datetime = json_data.get("last_message_datetime")
